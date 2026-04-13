@@ -1012,7 +1012,7 @@ html{font-family:'Source Sans 3',sans-serif;}
         <div class="contact-icon">✉</div>
         <div class="contact-info-text">
           <strong>Email</strong>
-          <span>kaurcheema44@gmail.com</span>
+          <span>nexusdiagaigroupuk@outlook.com</span>
         </div>
       </div>
       <div class="contact-info-item">
@@ -1037,47 +1037,54 @@ html{font-family:'Source Sans 3',sans-serif;}
         </div>
       </div>
     </div>
+<form class="contact-form" method="POST" action="https://api.web3forms.com/submit">
 
-    <div class="contact-right">
-      <div class="contact-form">
-        <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" placeholder="Your full name">
-        </div>
-        <div class="form-group">
-          <label>Email Address</label>
-          <input type="email" placeholder="your@email.com">
-        </div>
-        <div class="form-group">
-          <label>Organisation</label>
-          <input type="text" placeholder="NHS Trust, clinic, or institution name">
-        </div>
-        <div class="form-group">
-          <label>I am a…</label>
-          <select>
-            <option value="">Select your role</option>
-            <option>Clinical Director / Radiology Lead</option>
-            <option>Chief Digital Information Officer (CDIO)</option>
-            <option>NHS Trust / ICB Procurement Lead</option>
-            <option>Community Diagnostic Centre Manager</option>
-            <option>GP Practice / Primary Care Network</option>
-            <option>Private Imaging / Pathology Group</option>
-            <option>Pharmaceutical / Clinical Research Organisation</option>
-            <option>HealthTech / EHR Vendor</option>
-            <option>Telemedicine / Digital Health Platform</option>
-            <option>Investor / Funder</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>Message</label>
-          <textarea placeholder="Tell us about your interest in NexusDiag AI — demo request, pilot programme, partnership, or investment enquiry…"></textarea>
-        </div>
-        <button class="form-submit" type="button" onclick="this.textContent='Enquiry Sent ✓';this.style.background='linear-gradient(135deg,#00A88C,#007A66)';">Send Enquiry →</button>
-      </div>
-    </div>
+  <!-- 🔑 Your Access Key -->
+  <input type="hidden" name="access_key" value="e31f8f38-0eab-4779-97f5-530f63544f95">
 
+  <div class="form-group">
+    <label>Full Name</label>
+    <input type="text" name="name" placeholder="Your full name" required>
   </div>
+
+  <div class="form-group">
+    <label>Email Address</label>
+    <input type="email" name="email" placeholder="your@email.com" required>
+  </div>
+
+  <div class="form-group">
+    <label>Organisation</label>
+    <input type="text" name="organisation" placeholder="NHS Trust, clinic, or institution name">
+  </div>
+
+  <div class="form-group">
+    <label>I am a…</label>
+    <select name="role">
+      <option value="">Select your role</option>
+      <option>Clinical Director / Radiology Lead</option>
+      <option>Chief Digital Information Officer (CDIO)</option>
+      <option>NHS Trust / ICB Procurement Lead</option>
+      <option>Community Diagnostic Centre Manager</option>
+      <option>GP Practice / Primary Care Network</option>
+      <option>Private Imaging / Pathology Group</option>
+      <option>Pharmaceutical / Clinical Research Organisation</option>
+      <option>HealthTech / EHR Vendor</option>
+      <option>Telemedicine / Digital Health Platform</option>
+      <option>Investor / Funder</option>
+      <option>Other</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Message</label>
+    <textarea name="message" placeholder="Tell us about your interest..." required></textarea>
+  </div>
+
+  <button class="form-submit" type="submit">
+    Send Enquiry →
+  </button>
+
+</form>
 </section>
 
 <!-- ===================== FOOTER ===================== -->
