@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NexusDiag AI Group | Diagnostic Workflow Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;600&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ============================================================
+   RESET & ROOT  — NexusDiag AI medical/teal palette
+============================================================ */
+*{margin:0;padding:0;box-sizing:border-box;scroll-behavior:smooth;}
+
+:root{
+  --teal:#00C9A7;
+  --teal-dim:#00A88C;
+  --teal-dark:#007A66;
+  --deep:#040F12;
+  --deep-mid:#071820;
+  --red:#E63946;
+  --red-dark:#B52030;
+  --white:#FFFFFF;
+  --off-white:#EDF6F5;
+  --text-dark:#040F12;
+  --text-muted:#4A6060;
+  --card-bg:rgba(0,201,167,0.04);
+  --card-border:rgba(0,201,167,0.18);
+}
+
+html{font-family:'Source Sans 3',sans-serif;}
+
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:#040F12;}
+::-webkit-scrollbar-thumb{background:#00C9A7;border-radius:3px;}
+
+/* ============================================================
+   NAVBAR
+============================================================ */
+.navbar{
+  width:100%;background:rgba(4,15,18,0.97);
+  padding:14px 8%;position:fixed;top:0;left:0;
+  z-index:1000;border-bottom:1px solid rgba(0,201,167,0.18);
+  backdrop-filter:blur(12px);
+}
+.nav-container{
+  max-width:1200px;margin:auto;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.logo{
+  font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;
+  color:var(--teal);letter-spacing:2px;
+  display:flex;align-items:center;gap:10px;text-decoration:none;
+}
+.logo-icon{
+  width:36px;height:36px;
+  background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+  border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.logo-icon svg{width:22px;height:22px;}
+.logo span{color:var(--white);font-weight:400;}
+
+#navMenu{display:flex;gap:32px;align-items:center;}
+#navMenu a{
+  text-decoration:none;color:rgba(0,201,167,0.8);
+  font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  position:relative;transition:color 0.3s;font-family:'IBM Plex Mono',monospace;
+}
+#navMenu a::after{
+  content:"";position:absolute;left:0;bottom:-4px;
+  width:0;height:1px;background:var(--teal);transition:0.3s;
+}
+#navMenu a:hover{color:var(--teal);}
+#navMenu a:hover::after{width:100%;}
+.menu-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+.menu-toggle span{width:24px;height:2px;background:var(--teal);display:block;transition:0.3s;}
+
+@media(max-width:900px){
+  #navMenu{
+    position:absolute;top:64px;left:0;width:100%;
+    background:rgba(4,15,18,0.98);flex-direction:column;padding:28px 0;gap:20px;display:none;
+    border-bottom:1px solid rgba(0,201,167,0.18);
+  }
+  #navMenu.active{display:flex;}
+  .menu-toggle{display:flex;}
+}
+
+/* ============================================================
+   HERO
+============================================================ */
+.hero-section{
+  position:relative;padding:150px 8% 100px;background:var(--deep);
+  overflow:hidden;min-height:100vh;display:flex;align-items:center;
+}
+.hero-section::before{
+  content:"";position:absolute;top:0;right:0;width:280px;height:280px;
+  background:var(--teal);opacity:0.07;clip-path:polygon(100% 0,0 0,100% 100%);
+}
+.hero-section::after{
+  content:"";position:absolute;bottom:0;left:0;width:300px;height:300px;
+  background:var(--red);opacity:0.06;clip-path:polygon(0 100%,0 0,100% 100%);
+}
+.hero-glow{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:700px;height:700px;
+  background:radial-gradient(circle,rgba(0,201,167,0.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(0,201,167,0.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,201,167,0.04) 1px,transparent 1px);
+  background-size:60px 60px;pointer-events:none;
+}
+.hero-container{
+  max-width:1200px;margin:auto;
+  display:grid;grid-template-columns:1.1fr 0.9fr;
+  gap:70px;align-items:center;position:relative;z-index:2;width:100%;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.3);
+  color:var(--teal);font-size:11px;font-weight:700;letter-spacing:3px;
+  padding:6px 16px;border-radius:3px;text-transform:uppercase;
+  margin-bottom:20px;font-family:'IBM Plex Mono',monospace;
+}
+.hero-badge::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:var(--teal);
+  animation:pulse-dot 1.5s ease-in-out infinite;
+}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.6);}}
+.hero-left h1{
+  font-family:'Rajdhani',sans-serif;font-size:54px;line-height:1.12;
+  color:var(--teal);margin-bottom:8px;letter-spacing:1px;
+}
+.hero-left h1 span{color:var(--white);}
+.hero-divider{
+  width:70px;height:2px;background:linear-gradient(90deg,var(--teal),transparent);
+  margin:18px 0 24px;
+}
+.hero-text{color:#8ABAAB;font-size:17px;line-height:1.85;margin-bottom:35px;max-width:520px;}
+.hero-buttons{display:flex;gap:16px;flex-wrap:wrap;}
+.btn-teal{
+  background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+  color:var(--deep);padding:14px 32px;border-radius:4px;
+  text-decoration:none;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;
+  transition:0.3s;box-shadow:0 4px 20px rgba(0,201,167,0.25);font-family:'IBM Plex Mono',monospace;
+}
+.btn-teal:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,201,167,0.4);}
+.btn-outline-teal{
+  border:1px solid var(--teal);color:var(--teal);padding:14px 32px;border-radius:4px;
+  text-decoration:none;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;
+  transition:0.3s;font-family:'IBM Plex Mono',monospace;
+}
+.btn-outline-teal:hover{background:rgba(0,201,167,0.08);}
+.hero-right{position:relative;}
+.hero-card{
+  background:rgba(0,201,167,0.04);border:1px solid rgba(0,201,167,0.18);
+  border-radius:12px;padding:35px;backdrop-filter:blur(8px);position:relative;overflow:hidden;
+}
+.hero-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;
+  height:2px;background:linear-gradient(90deg,var(--teal),var(--red));
+}
+.hero-card-title{
+  font-family:'IBM Plex Mono',monospace;color:var(--teal);
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;margin-bottom:20px;
+}
+.hero-stat{
+  display:flex;align-items:center;gap:14px;
+  padding:14px 0;border-bottom:1px solid rgba(0,201,167,0.08);
+}
+.hero-stat:last-child{border-bottom:none;}
+.stat-dot{width:8px;height:8px;border-radius:50%;background:var(--teal);flex-shrink:0;}
+.stat-dot.red{background:var(--red);}
+.stat-label{color:#8ABAAB;font-size:14px;flex:1;}
+.stat-val{color:var(--teal);font-weight:700;font-size:16px;font-family:'Rajdhani',sans-serif;letter-spacing:1px;}
+
+@media(max-width:900px){
+  .hero-section{padding:120px 6% 80px;min-height:auto;}
+  .hero-container{grid-template-columns:1fr;gap:50px;text-align:center;}
+  .hero-left h1{font-size:32px;}
+  .hero-divider{margin:16px auto 22px;}
+  .hero-text{font-size:15px;margin:0 auto 28px;max-width:95%;}
+  .hero-buttons{justify-content:center;}
+  .btn-teal,.btn-outline-teal{padding:13px 24px;font-size:12px;}
+}
+
+/* ============================================================
+   ABOUT
+============================================================ */
+.about-section{padding:130px 8%;background:var(--deep-mid);position:relative;overflow:hidden;}
+.about-section::before{
+  content:"";position:absolute;top:0;right:0;width:250px;height:250px;
+  background:var(--red);opacity:0.05;clip-path:polygon(100% 0,0 0,100% 100%);
+}
+.about-section::after{
+  content:"";position:absolute;bottom:0;left:0;width:250px;height:250px;
+  background:var(--teal);opacity:0.04;clip-path:polygon(0 100%,0 0,100% 100%);
+}
+.about-container{
+  max-width:1100px;margin:auto;display:grid;grid-template-columns:1.3fr 1fr;
+  gap:80px;align-items:center;position:relative;z-index:2;
+}
+.section-label{
+  display:inline-block;color:var(--teal);font-size:11px;font-weight:700;
+  letter-spacing:4px;text-transform:uppercase;margin-bottom:14px;font-family:'IBM Plex Mono',monospace;
+}
+.section-title{
+  font-family:'Rajdhani',sans-serif;font-size:40px;color:var(--teal);
+  line-height:1.2;margin-bottom:8px;letter-spacing:1px;
+}
+.section-divider{
+  width:70px;height:2px;background:linear-gradient(90deg,var(--teal),transparent);margin:14px 0 26px;
+}
+.about-left p{color:#8ABAAB;line-height:1.85;margin-bottom:20px;font-size:16px;max-width:520px;}
+.about-features{margin-top:28px;display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.feature-tag{
+  background:rgba(0,201,167,0.06);border:1px solid rgba(0,201,167,0.18);
+  color:rgba(0,201,167,0.9);padding:10px 16px;border-radius:5px;
+  font-size:12px;font-weight:700;letter-spacing:0.5px;font-family:'IBM Plex Mono',monospace;
+}
+.founder-box{
+  background:rgba(0,201,167,0.04);border:1px solid rgba(0,201,167,0.18);
+  padding:38px;border-radius:12px;position:relative;
+}
+.founder-box::before{
+  content:'"';position:absolute;top:-20px;left:28px;
+  font-size:80px;color:var(--teal);opacity:0.12;font-family:'Rajdhani',sans-serif;line-height:1;
+}
+.founder-box::after{
+  content:"";position:absolute;top:0;left:0;right:0;
+  height:2px;background:linear-gradient(90deg,var(--teal),transparent);border-radius:12px 12px 0 0;
+}
+.founder-box-title{
+  font-family:'Rajdhani',sans-serif;color:var(--teal);
+  font-size:13px;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;
+}
+.founder-box-div{width:50px;height:2px;background:var(--teal);margin-bottom:18px;}
+.founder-box p{color:#8ABAAB;line-height:1.8;margin-bottom:16px;font-size:15px;}
+.founder-box p strong{color:rgba(0,201,167,0.9);}
+.linkedin-btn{
+  display:inline-block;padding:10px 22px;background:var(--teal);color:var(--deep);
+  text-decoration:none;border-radius:4px;font-weight:700;font-size:12px;
+  letter-spacing:1px;text-transform:uppercase;margin-top:4px;transition:0.3s;
+  font-family:'IBM Plex Mono',monospace;
+}
+.linkedin-btn:hover{background:#33DDB8;}
+
+@media(max-width:900px){
+  .about-section{padding:90px 6%;}
+  .about-container{grid-template-columns:1fr;gap:50px;text-align:center;}
+  .section-divider{margin:14px auto 24px;}
+  .about-left p{margin:0 auto 18px;max-width:95%;}
+  .about-features{grid-template-columns:1fr;max-width:300px;margin:20px auto 0;}
+  .feature-tag{text-align:center;}
+  .founder-box{text-align:center;}
+  .founder-box-div{margin:8px auto 18px;}
+}
+
+/* ============================================================
+   PROCESS
+============================================================ */
+.process-section{padding:130px 8%;background:var(--off-white);position:relative;overflow:hidden;}
+.process-section::before{
+  content:"";position:absolute;top:0;right:0;width:250px;height:250px;
+  background:var(--teal);opacity:0.07;clip-path:polygon(100% 0,0 0,100% 100%);
+}
+.process-section::after{
+  content:"";position:absolute;bottom:0;left:0;width:260px;height:260px;
+  background:var(--deep);opacity:0.07;clip-path:polygon(0 100%,0 0,100% 100%);
+}
+.process-container{max-width:1200px;margin:auto;text-align:center;position:relative;z-index:2;}
+.process-container .section-title{color:var(--text-dark);}
+.process-container .section-label{color:var(--red);}
+.process-container .section-divider{margin:14px auto 26px;background:linear-gradient(90deg,var(--teal-dim),transparent);}
+.process-sub{max-width:660px;margin:0 auto 60px;color:#4A6060;line-height:1.8;font-size:16px;}
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;}
+.process-card{
+  background:var(--white);padding:28px 22px;border-radius:10px;
+  border:1px solid #C8E0DC;border-top:4px solid var(--teal);
+  text-align:left;transition:0.35s;box-shadow:0 4px 20px rgba(0,0,0,0.04);
+}
+.process-card:hover{
+  transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,201,167,0.12);border-top-color:var(--red);
+}
+.process-card-img{
+  width:100%;height:140px;object-fit:cover;background:var(--deep);
+  border-radius:7px;margin-bottom:16px;display:block;
+}
+.step-badge{
+  display:inline-block;background:var(--teal);color:var(--deep);
+  font-size:11px;font-weight:700;padding:5px 14px;border-radius:3px;
+  letter-spacing:1px;margin-bottom:12px;font-family:'IBM Plex Mono',monospace;
+}
+.process-card h3{
+  font-family:'Rajdhani',sans-serif;margin-bottom:10px;
+  color:var(--text-dark);font-size:18px;letter-spacing:0.5px;
+}
+.process-card p{color:#4A6060;font-size:14px;line-height:1.65;}
+
+@media(max-width:1000px){.process-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){
+  .process-section{padding:80px 6%;}
+  .process-container .section-title{font-size:26px;}
+  .process-sub{font-size:14px;margin-bottom:40px;}
+  .process-grid{grid-template-columns:1fr;}
+}
+
+/* ============================================================
+   PLATFORM
+============================================================ */
+.platform-section{padding:130px 8%;background:var(--deep);position:relative;overflow:hidden;}
+.platform-section::before{
+  content:"";position:absolute;top:0;right:0;width:250px;height:250px;
+  background:var(--teal);opacity:0.06;clip-path:polygon(100% 0,0 0,100% 100%);
+}
+.platform-section::after{
+  content:"";position:absolute;bottom:0;left:0;width:260px;height:260px;
+  background:var(--red);opacity:0.05;clip-path:polygon(0 100%,0 0,100% 100%);
+}
+.platform-container{max-width:1200px;margin:auto;text-align:center;position:relative;z-index:2;}
+.platform-container .section-title{color:var(--teal);}
+.platform-container .section-label{color:var(--red);}
+.platform-container .section-divider{margin:14px auto 26px;background:linear-gradient(90deg,var(--teal),transparent);}
+.platform-sub{max-width:660px;margin:0 auto 60px;color:#8ABAAB;line-height:1.8;font-size:16px;}
+.platform-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.platform-card{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  padding:30px 25px;border-radius:10px;text-align:left;transition:0.35s;position:relative;overflow:hidden;
+}
+.platform-card::before{
+  content:"";position:absolute;top:0;left:0;right:0;
+  height:2px;background:linear-gradient(90deg,var(--teal),var(--red));
+  transform:scaleX(0);transform-origin:left;transition:0.4s;
+}
+.platform-card:hover{
+  transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.4);
+  border-color:rgba(0,201,167,0.35);
+}
+.platform-card:hover::before{transform:scaleX(1);}
+.platform-card-img{
+  width:100%;height:145px;object-fit:cover;background:var(--deep);
+  border-radius:7px;margin-bottom:18px;display:block;
+}
+.element-badge{
+  display:inline-block;background:rgba(230,57,70,0.10);border:1px solid rgba(230,57,70,0.28);
+  color:#FF7070;font-size:11px;font-weight:700;padding:4px 12px;border-radius:3px;
+  letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;font-family:'IBM Plex Mono',monospace;
+}
+.platform-card h3{
+  font-family:'Rajdhani',sans-serif;color:rgba(0,201,167,0.9);
+  font-size:18px;margin-bottom:10px;letter-spacing:0.5px;
+}
+.platform-card p.short-text{color:#8ABAAB;font-size:13px;margin-bottom:12px;font-style:italic;}
+.platform-card p.more-text{color:#607070;font-size:14px;line-height:1.65;display:none;margin-bottom:14px;}
+.platform-card.open p.more-text{display:block;}
+.learn-btn{
+  background:none;border:1px solid rgba(0,201,167,0.3);color:var(--teal);
+  font-size:12px;font-weight:700;padding:7px 16px;border-radius:3px;cursor:pointer;
+  letter-spacing:1px;text-transform:uppercase;transition:0.3s;font-family:'IBM Plex Mono',monospace;
+}
+.learn-btn:hover{background:rgba(0,201,167,0.08);border-color:var(--teal);}
+
+@media(max-width:1000px){.platform-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:600px){.platform-section{padding:80px 6%;}.platform-grid{grid-template-columns:1fr;}}
+
+/* ============================================================
+   MARKET STRIP
+============================================================ */
+.market-strip{
+  padding:80px 8%;
+  background:linear-gradient(135deg,#020C10,#071820,#040F14);
+  position:relative;overflow:hidden;
+  border-top:1px solid rgba(0,201,167,0.12);border-bottom:1px solid rgba(0,201,167,0.12);
+}
+.market-strip::before{
+  content:"";position:absolute;top:0;right:0;width:200px;height:200px;
+  background:rgba(0,0,0,0.15);clip-path:polygon(100% 0,0 0,100% 100%);
+}
+.market-strip::after{
+  content:"";position:absolute;bottom:0;left:0;width:200px;height:200px;
+  background:rgba(0,0,0,0.1);clip-path:polygon(0 100%,0 0,100% 100%);
+}
+.stats-grid{
+  max-width:1100px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);
+  gap:30px;text-align:center;position:relative;z-index:2;
+}
+.stat-item{border-right:1px solid rgba(0,201,167,0.15);padding:10px 20px;}
+.stat-item:last-child{border-right:none;}
+.stat-num{
+  font-family:'Rajdhani',sans-serif;font-size:42px;color:var(--teal);
+  font-weight:700;display:block;margin-bottom:8px;letter-spacing:1px;
+}
+.stat-desc{color:rgba(255,255,255,0.7);font-size:14px;line-height:1.5;}
+
+@media(max-width:900px){
+  .stats-grid{grid-template-columns:repeat(2,1fr);}
+  .stat-item{border-right:none;border-bottom:1px solid rgba(0,201,167,0.12);padding:16px;}
+  .stat-item:last-child{border-bottom:none;}
+}
+@media(max-width:500px){.stats-grid{grid-template-columns:1fr;}}
+
+/* ============================================================
+   PRICING
+============================================================ */
+.pricing-section{padding:130px 8%;background:var(--off-white);position:relative;overflow:hidden;}
+.pricing-section::before{
+  content:"";position:absolute;top:0;right:0;width:240px;height:240px;
+  background:var(--teal);opacity:0.06;clip-path:polygon(100% 0,0 0,100% 100%);
+}
+.pricing-section::after{
+  content:"";position:absolute;bottom:0;left:0;width:250px;height:250px;
+  background:var(--deep);opacity:0.05;clip-path:polygon(0 100%,0 0,100% 100%);
+}
+.pricing-container{max-width:1100px;margin:auto;text-align:center;position:relative;z-index:2;}
+.pricing-container .section-title{color:var(--text-dark);}
+.pricing-container .section-label{color:var(--red);}
+.pricing-container .section-divider{margin:14px auto 26px;background:linear-gradient(90deg,var(--teal-dim),transparent);}
+.pricing-sub{max-width:580px;margin:0 auto 55px;color:#4A6060;line-height:1.8;font-size:16px;}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+.price-card{
+  background:var(--white);border:1px solid #C8E0DC;padding:38px 30px;border-radius:10px;
+  text-align:left;transition:0.35s;position:relative;box-shadow:0 4px 20px rgba(0,0,0,0.04);
+}
+.price-card.featured{
+  background:var(--deep);border-color:var(--teal);border-top:4px solid var(--teal);
+  box-shadow:0 10px 40px rgba(0,201,167,0.18);transform:scale(1.04);
+}
+.price-card:not(.featured){border-top:4px solid #B0D4CC;}
+.price-card:hover:not(.featured){transform:translateY(-6px);box-shadow:0 16px 40px rgba(0,0,0,0.08);}
+.price-tag{
+  display:inline-block;background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.22);
+  color:var(--teal);font-size:11px;font-weight:700;letter-spacing:2px;
+  padding:5px 12px;border-radius:3px;text-transform:uppercase;margin-bottom:16px;
+  font-family:'IBM Plex Mono',monospace;
+}
+.price-card.featured .price-tag{background:rgba(0,201,167,0.15);}
+.price-card h3{font-family:'Rajdhani',sans-serif;font-size:24px;margin-bottom:6px;color:var(--text-dark);letter-spacing:0.5px;}
+.price-card.featured h3{color:var(--teal);}
+.price-card > p{color:#607070;font-size:14px;margin-bottom:4px;}
+.price-card.featured > p{color:#8ABAAB;}
+.price-amount{
+  font-family:'Rajdhani',sans-serif;font-size:34px;font-weight:700;
+  color:var(--teal-dim);margin:16px 0 6px;display:block;
+}
+.price-card.featured .price-amount{color:var(--teal);}
+.price-unit{color:#888;font-size:13px;margin-bottom:22px;}
+.price-card.featured .price-unit{color:#8ABAAB;}
+.price-features{list-style:none;margin-bottom:28px;}
+.price-features li{
+  padding:9px 0;border-bottom:1px solid rgba(0,0,0,0.06);
+  color:#4A6060;font-size:14px;display:flex;gap:10px;align-items:flex-start;
+}
+.price-card.featured .price-features li{border-bottom-color:rgba(255,255,255,0.07);color:#8ABAAB;}
+.price-features li:last-child{border-bottom:none;}
+.check{color:var(--teal);font-weight:700;flex-shrink:0;}
+.price-btn{
+  display:block;text-align:center;padding:13px;border-radius:5px;
+  text-decoration:none;font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;
+  transition:0.3s;font-family:'IBM Plex Mono',monospace;
+}
+.price-btn-outline{border:1px solid var(--deep);color:var(--deep);}
+.price-btn-outline:hover{background:var(--deep);color:var(--white);}
+.price-btn-teal{background:linear-gradient(135deg,var(--teal),var(--teal-dark));color:var(--deep);}
+.price-btn-teal:hover{filter:brightness(1.1);}
+
+@media(max-width:900px){.pricing-grid{grid-template-columns:1fr;}.price-card.featured{transform:scale(1);}}
+@media(max-width:600px){.pricing-section{padding:80px 6%;}.pricing-container .section-title{font-size:26px;}}
+
+/* ============================================================
+   FAQ
+============================================================ */
+.faq-section{padding:130px 8%;background:var(--deep);position:relative;overflow:hidden;}
+.faq-section::before{
+  content:"";position:absolute;top:0;right:0;width:240px;height:240px;
+  background:var(--teal);opacity:0.06;clip-path:polygon(100% 0,0 0,100% 100%);
+}
+.faq-section::after{
+  content:"";position:absolute;bottom:0;left:0;width:250px;height:250px;
+  background:var(--red);opacity:0.05;clip-path:polygon(0 100%,0 0,100% 100%);
+}
+.faq-container{max-width:800px;margin:auto;position:relative;z-index:2;}
+.faq-header{text-align:center;margin-bottom:50px;}
+.faq-header .section-title{color:var(--teal);}
+.faq-header .section-label{color:var(--red);}
+.faq-header .section-divider{margin:14px auto 20px;}
+.faq-item{border-bottom:1px solid rgba(0,201,167,0.12);padding:20px 0;}
+.faq-question{display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:20px;}
+.faq-question h4{
+  font-family:'Rajdhani',sans-serif;color:rgba(0,201,167,0.9);
+  font-size:17px;font-weight:600;letter-spacing:0.3px;
+}
+.faq-icon{color:var(--teal);font-size:20px;font-weight:300;flex-shrink:0;transition:0.3s;font-family:'IBM Plex Mono',monospace;}
+.faq-answer{display:none;color:#607070;font-size:15px;line-height:1.75;padding-top:14px;}
+.faq-item.open .faq-answer{display:block;}
+.faq-item.open .faq-icon{transform:rotate(45deg);color:var(--red);}
+
+@media(max-width:600px){.faq-section{padding:80px 6%;}.faq-question h4{font-size:15px;}}
+
+/* ============================================================
+   CONTACT
+============================================================ */
+.contact-section{padding:130px 8%;background:var(--deep-mid);position:relative;overflow:hidden;}
+.contact-section::before{
+  content:"";position:absolute;top:0;right:0;width:240px;height:240px;
+  background:var(--teal);opacity:0.06;clip-path:polygon(100% 0,0 0,100% 100%);
+}
+.contact-section::after{
+  content:"";position:absolute;bottom:0;left:0;width:250px;height:250px;
+  background:var(--red);opacity:0.06;clip-path:polygon(0 100%,0 0,100% 100%);
+}
+.contact-container{
+  max-width:1050px;margin:auto;display:grid;grid-template-columns:1fr 1fr;
+  gap:70px;align-items:start;position:relative;z-index:2;
+}
+.contact-left .section-title{color:var(--teal);}
+.contact-left .section-label{color:var(--red);}
+.contact-left .section-divider{background:linear-gradient(90deg,var(--teal),transparent);}
+.contact-left p{color:#8ABAAB;line-height:1.8;font-size:16px;margin-bottom:30px;}
+.contact-info-item{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;}
+.contact-icon{
+  width:38px;height:38px;background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.18);
+  border-radius:5px;display:flex;align-items:center;justify-content:center;
+  color:var(--teal);font-size:16px;flex-shrink:0;
+}
+.contact-info-text strong{color:rgba(0,201,167,0.9);font-size:13px;display:block;margin-bottom:3px;}
+.contact-info-text span{color:#607070;font-size:14px;}
+.contact-form{display:flex;flex-direction:column;gap:16px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group label{color:var(--teal);font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;font-family:'IBM Plex Mono',monospace;}
+.form-group input,.form-group select,.form-group textarea{
+  background:rgba(0,201,167,0.04);border:1px solid rgba(0,201,167,0.18);
+  color:var(--white);padding:12px 16px;border-radius:5px;font-size:14px;
+  font-family:'Source Sans 3',sans-serif;outline:none;transition:0.3s;
+}
+.form-group input::placeholder,.form-group textarea::placeholder{color:#607070;}
+.form-group select option{background:#071820;color:var(--white);}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{
+  border-color:var(--teal);background:rgba(0,201,167,0.07);
+}
+.form-group textarea{min-height:120px;resize:vertical;}
+.form-submit{
+  background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+  color:var(--deep);border:none;padding:14px 28px;border-radius:5px;
+  font-weight:700;font-size:13px;letter-spacing:1px;text-transform:uppercase;
+  cursor:pointer;transition:0.3s;font-family:'IBM Plex Mono',monospace;
+}
+.form-submit:hover{filter:brightness(1.15);transform:translateY(-2px);}
+
+@media(max-width:900px){.contact-section{padding:90px 6%;}.contact-container{grid-template-columns:1fr;gap:50px;}}
+@media(max-width:600px){.contact-section{padding:80px 6%;}.contact-left .section-title{font-size:26px;}}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+.footer{background:#020810;padding:70px 8% 30px;border-top:1px solid rgba(0,201,167,0.12);}
+.footer-grid{
+  max-width:1100px;margin:auto;display:grid;grid-template-columns:2fr 1fr 1fr;
+  gap:50px;margin-bottom:50px;
+}
+.footer-brand .logo-wrap{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.footer-brand .logo-icon-sm{
+  width:32px;height:32px;background:linear-gradient(135deg,var(--teal),var(--teal-dark));
+  border-radius:7px;display:flex;align-items:center;justify-content:center;
+}
+.footer-brand .logo-icon-sm svg{width:18px;height:18px;}
+.footer-brand .logo-text{
+  font-family:'Rajdhani',sans-serif;font-size:20px;font-weight:700;
+  color:var(--teal);letter-spacing:2px;
+}
+.footer-brand .logo-text span{color:var(--white);font-weight:400;}
+.footer-brand p{color:#4A6060;font-size:14px;line-height:1.8;max-width:340px;}
+.footer-col h4{
+  font-family:'Rajdhani',sans-serif;color:var(--teal);
+  font-size:14px;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;
+}
+.footer-col a{display:block;color:#4A6060;font-size:14px;text-decoration:none;margin-bottom:10px;transition:color 0.3s;}
+.footer-col a:hover{color:var(--teal);}
+.footer-bottom{
+  max-width:1100px;margin:auto;padding-top:28px;
+  border-top:1px solid rgba(0,201,167,0.08);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+}
+.footer-bottom p{color:#304040;font-size:13px;}
+.footer-bottom p span{color:var(--teal);}
+
+@media(max-width:900px){
+  .footer-grid{grid-template-columns:1fr 1fr;gap:35px;}
+  .footer-brand{grid-column:span 2;}
+}
+@media(max-width:600px){
+  .footer-grid{grid-template-columns:1fr;}
+  .footer-brand{grid-column:auto;}
+  .footer-bottom{flex-direction:column;text-align:center;}
+}
+
+</style>
+</head>
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<nav class="navbar">
+  <div class="nav-container">
+    <a href="#home" class="logo">
+      <div class="logo-icon">
+        <!-- Medical cross / diagnostic pulse icon -->
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="2" width="4" height="20" rx="1" fill="#040F12"/>
+          <rect x="2" y="10" width="20" height="4" rx="1" fill="#040F12"/>
+          <circle cx="12" cy="12" r="2.5" fill="#040F12" opacity="0.5"/>
+        </svg>
+      </div>
+      NexusDiag<span> AI Group</span>
+    </a>
+    <div id="navMenu">
+      <a href="#about">About</a>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#platform">Technology</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="menu-toggle" id="menuToggle">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero-section" id="home">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-container">
+    <div class="hero-left">
+      <div class="hero-badge">TRL 7 Validated · UK HealthTech Innovation</div>
+      <h1>The UK's First <span>AI-Powered</span><br>Diagnostic <span>Workflow</span><br>Intelligence Platform</h1>
+      <div class="hero-divider"></div>
+      <p class="hero-text">
+        NexusDiag AI bridges the critical communication gap between diagnostic laboratories, imaging departments, and front-line clinical staff — synchronizing LIMS and PACS in real time to eliminate the UK's 1.8 million patient diagnostic backlog with sub-200ms predictive intelligence.
+      </p>
+      <div class="hero-buttons">
+        <a href="#contact" class="btn-teal">Request a Demo →</a>
+        <a href="#platform" class="btn-outline-teal">Explore Technology</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card">
+        <div class="hero-card-title">// TRL 7 Performance Metrics</div>
+        <div class="hero-stat">
+          <div class="stat-dot"></div>
+          <span class="stat-label">Bottleneck Prediction Accuracy</span>
+          <span class="stat-val">96%</span>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-dot"></div>
+          <span class="stat-label">Report Validation Precision</span>
+          <span class="stat-val">94%</span>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-dot"></div>
+          <span class="stat-label">Alert Propagation Latency</span>
+          <span class="stat-val">&lt;200ms</span>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-dot"></div>
+          <span class="stat-label">Offline Resilience Mode</span>
+          <span class="stat-val">95%</span>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-dot red"></div>
+          <span class="stat-label">NHS Diagnostic Waiting List</span>
+          <span class="stat-val" style="color:var(--red)">1.8M+</span>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-dot red"></div>
+          <span class="stat-label">Annual Clinical Negligence Cost</span>
+          <span class="stat-val" style="color:var(--red)">£3.6B</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== ABOUT ===================== -->
+<section class="about-section" id="about">
+  <div class="about-container">
+    <div class="about-left">
+      <div class="section-label">About NexusDiag AI Group</div>
+      <h2 class="section-title">Closing the Diagnostic<br>Information Silo</h2>
+      <div class="section-divider"></div>
+      <p>
+        NexusDiag AI introduces an innovative "Workflow Intelligence" platform that bridges the critical communication gap between diagnostic laboratories, imaging departments, and front-line clinical staff. By combining advanced computer vision, temporal predictive analytics, and NLP, the system enables real-time synchronization of LIMS and PACS with primary clinical workflows.
+      </p>
+      <p>
+        Unlike static reporting tools or traditional administrative tracking, NexusDiag AI functions as a <strong style="color:rgba(0,201,167,0.9)">proactive middleware infrastructure</strong> — processing diagnostic metadata with sub-200ms latency via secure Edge AI gateways integrated within hospital firewalls.
+      </p>
+      <p>
+        Fully aligned with the NHS 10-Year Health Plan, DTAC 2.0, and the Data Use and Access Act 2025 — transforming diagnostic centres from overwhelmed data processors into highly efficient, predictive hubs of clinical care.
+      </p>
+      <div class="about-features">
+        <div class="feature-tag">DTAC 2.0 Compliant</div>
+        <div class="feature-tag">DCB0129 Aligned</div>
+        <div class="feature-tag">HL7 / FHIR R5 Ready</div>
+        <div class="feature-tag">Edge AI Sovereignty</div>
+        <div class="feature-tag">98.5% Gross Margin</div>
+        <div class="feature-tag">GAN-Powered Validation</div>
+      </div>
+    </div>
+    <div class="founder-box">
+      <div class="founder-box-title">Founder &amp; CEO</div>
+      <div class="founder-box-div"></div>
+      <p>
+        <strong>Simran Kaur</strong> brings over five years of specialized experience in the diagnostic healthcare sector, bridging clinical laboratory science and strategic business management.
+      </p>
+      <p>
+        Holding a <strong>Bachelor of Medical Science (Laboratory Technology)</strong> and an <strong>MBA from the University of Cumbria</strong>, her dual expertise ensures NexusDiag AI is built with clinical integrity while navigating the complex procurement pathways of the UK healthcare market.
+      </p>
+      <p>
+        Her front-line experience across pathology, radiology, and pharmaceutical workflows directly informs the platform's <strong>AI Translation Engine (AITE)</strong> — achieving 96% accuracy in clinical intent normalization.
+      </p>
+      <a href="#contact" class="linkedin-btn">Contact the Founder →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PROCESS ===================== -->
+<section class="process-section" id="how-it-works">
+  <div class="process-container">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">Securing the Referral-to-Report Journey</h2>
+    <div class="section-divider"></div>
+    <p class="process-sub">
+      Every diagnostic test order passes through NexusDiag AI's four-stage intelligence pipeline — converting fragmented hospital data into real-time workflow oversight, predictive alerts, and closed-loop clinical notifications.
+    </p>
+    <div class="process-grid">
+
+      <div class="process-card">
+        <img src="ne1.png" class="process-card-img" alt="FHIR Integration">
+        <div class="step-badge">STEP 01</div>
+        <h3>HL7/FHIR Data Ingestion</h3>
+        <p>The platform connects seamlessly to existing LIMS, RIS, and EPR systems via HL7/FHIR R5 APIs — creating a unified patient diagnostic timeline without requiring hardware changes or new infrastructure investment.</p>
+      </div>
+
+      <div class="process-card">
+        <img src="ne2.png" class="process-card-img" alt="Predictive AI">
+        <div class="step-badge">STEP 02</div>
+        <h3>Predictive Bottleneck Detection</h3>
+        <p>The hybrid CNN-RNN engine analyses diagnostic throughput in real time, identifying tests at risk of breaching the 6-week NHS standard before delays occur — enabling proactive resource reallocation with sub-200ms latency.</p>
+      </div>
+
+      <div class="process-card">
+        <img src="ne3.png" class="process-card-img" alt="NLP Validation">
+        <div class="step-badge">STEP 03</div>
+        <h3>AI Clinical Validation (NLP)</h3>
+        <p>The NLP layer cross-references laboratory findings with original referral notes, flagging interpretive inconsistencies — such as "normal" results representing significant deviations from a patient's historical baseline — for immediate secondary review.</p>
+      </div>
+
+      <div class="process-card">
+        <img src="ne4.png" class="process-card-img" alt="Closed Loop">
+        <div class="step-badge">STEP 04</div>
+        <h3>Closed-Loop Notification &amp; Audit</h3>
+        <p>Critical findings instantly notify referring clinicians via secure HL7/FHIR channels, bypassing administrative delays. Every interaction is recorded on an encrypted, legally defensible audit trail — reducing clinical negligence liability for NHS Trusts.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PLATFORM ===================== -->
+<section class="platform-section" id="platform">
+  <div class="platform-container">
+    <div class="section-label">Core Technology</div>
+    <h2 class="section-title">Five Proprietary Clinical AI Elements</h2>
+    <div class="section-divider"></div>
+    <p class="platform-sub">
+      The NexusDiag AI framework is powered by five distinct clinical intelligence innovations — each a defensible layer in the UK's first proactive diagnostic middleware platform, purpose-built for NHS-grade operational environments.
+    </p>
+    <div class="platform-grid">
+
+      <div class="platform-card" id="card-a">
+        <img src="ne5.png" class="platform-card-img" alt="Predictive Workflow Engine">
+        <div class="element-badge">Engine A</div>
+        <h3>Predictive Workflow Intelligence Engine</h3>
+        <p class="short-text">Real-time identification of tests likely to breach the 6-week NHS diagnostic standard.</p>
+        <p class="more-text">Uses RNN and LSTM networks to interpret the "velocity" of diagnostic samples and scans — identifying clinical black holes where tests may be stalled. Enables sub-200ms resource reallocation before NHS 6-week target breaches occur, shifting diagnostic management from reactive to proactive.</p>
+        <button class="learn-btn" onclick="toggleCard('card-a',this)">Learn More</button>
+      </div>
+
+      <div class="platform-card" id="card-b">
+        <img src="ne6.png" class="platform-card-img" alt="NLP Clinical Validation">
+        <div class="element-badge">Engine B</div>
+        <h3>NLP Clinical Consistency Hub</h3>
+        <p class="short-text">Proprietary NLP trained on UK clinical shorthand — cross-referencing reports with referral intent.</p>
+        <p class="more-text">Unlike generic NLP, the AITE (AI Translation Engine) is purpose-built to cross-reference laboratory findings and radiology report text with the original clinical referral intent. "Consistency Mapping" logic flags interpretive inconsistencies that deviate from a patient's longitudinal baseline — addressing 25% of diagnostic errors linked to interpretive failure.</p>
+        <button class="learn-btn" onclick="toggleCard('card-b',this)">Learn More</button>
+      </div>
+
+      <div class="platform-card" id="card-c">
+        <img src="ne7.png" class="platform-card-img" alt="GAN Data Synthesis">
+        <div class="element-badge">Engine C</div>
+        <h3>GAN-Based Synthetic Data Engine</h3>
+        <p class="short-text">Generative Adversarial Networks creating high-fidelity synthetic clinical datasets for rare pathologies.</p>
+        <p class="more-text">Overcomes the critical data scarcity problem for rare diagnostic conditions — generating realistic simulations of rare laboratory "red flags" so the AI continuously refines validation accuracy without requiring access to sensitive patient PII. Maintains 94% validation precision across regional variations in diagnostic shorthand and equipment outputs.</p>
+        <button class="learn-btn" onclick="toggleCard('card-c',this)">Learn More</button>
+      </div>
+
+      <div class="platform-card" id="card-d">
+        <img src="ne8.png" class="platform-card-img" alt="Edge AI">
+        <div class="element-badge">Engine D</div>
+        <h3>Offline-First Edge AI Architecture</h3>
+        <p class="short-text">Hospital-grade diagnostic tracking that operates locally within Trust firewalls — zero cloud dependency.</p>
+        <p class="more-text">Critical anomaly detection and workflow tracking run locally on hospital servers, ensuring 95% functionality during NHS network downtime. No Personal Identifiable Information leaves the secure Trust network, exceeding GDPR and NHS Data (Use and Access) requirements. Maintains sub-200ms latency even in rural diagnostic hubs and mobile MRI units.</p>
+        <button class="learn-btn" onclick="toggleCard('card-d',this)">Learn More</button>
+      </div>
+
+      <div class="platform-card" id="card-e">
+        <img src="ne9.png" class="platform-card-img" alt="Closed Loop Notification">
+        <div class="element-badge">Engine E</div>
+        <h3>Closed-Loop Notification &amp; Audit Framework</h3>
+        <p class="short-text">Automated encrypted audit trails eliminating the 24% of Missed Diagnostic Opportunities from follow-up failures.</p>
+        <p class="more-text">Upon detection of a critical finding, the system bypasses administrative delays — instantly notifying referring clinicians via secure HL7/FHIR channels. Generates encrypted, legally defensible audit trails that track the result-to-action timeline, directly reducing clinical negligence liability for healthcare trusts and supporting DCB0129 compliance.</p>
+        <button class="learn-btn" onclick="toggleCard('card-e',this)">Learn More</button>
+      </div>
+
+      <div class="platform-card" id="card-f">
+        <img src="ne10.png" class="platform-card-img" alt="Regional Dashboards">
+        <div class="element-badge">Architecture</div>
+        <h3>Regional ICB Intelligence Dashboards</h3>
+        <p class="short-text">High-level KPI visibility across entire Integrated Care Board regions — balancing diagnostic capacity in real time.</p>
+        <p class="more-text">Provides ICBs with high-level analytical tools for regional efficiency: real-time visibility into turnaround times (TAT), breach rates, and error frequencies across entire healthcare regions. Identifies when one hospital's lab is overwhelmed and suggests routing samples to under-utilised nearby sites — supporting the NHS 10-Year Health Plan digital vision.</p>
+        <button class="learn-btn" onclick="toggleCard('card-f',this)">Learn More</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MARKET STRIP ===================== -->
+<section class="market-strip">
+  <div class="stats-grid">
+    <div class="stat-item">
+      <span class="stat-num">£8.3B</span>
+      <div class="stat-desc">UK clinical diagnostics market projected by 2030 — fastest-growing software segment</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">£242.7M</span>
+      <div class="stat-desc">Total Addressable Market across NHS Trusts, CDCs, GP practices and private labs</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">98.5%</span>
+      <div class="stat-desc">Gross margin of NexusDiag AI's high-efficiency clinical SaaS model</div>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">£3.16M</span>
+      <div class="stat-desc">Projected Annual Revenue by Year 5 with net profit margin of 26.7%</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRICING ===================== -->
+<section class="pricing-section" id="pricing">
+  <div class="pricing-container">
+    <div class="section-label">Licensing &amp; Pricing</div>
+    <h2 class="section-title">Enterprise-Grade Clinical AI.<br>Fraction of the Cost.</h2>
+    <div class="section-divider"></div>
+    <p class="pricing-sub">
+      A NexusDiag AI Professional subscription represents less than 5% of the cost of a single diagnostic negligence claim — delivering continuous clinical oversight and regulatory compliance year-round.
+    </p>
+    <div class="pricing-grid">
+
+      <div class="price-card">
+        <div class="price-tag">Basic Tier</div>
+        <h3>Small Clinic</h3>
+        <p>For GP practices, small diagnostic labs and community clinics requiring core workflow tracking.</p>
+        <span class="price-amount">£199</span>
+        <div class="price-unit">per month · billed annually</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> Real-time workflow tracking</li>
+          <li><span class="check">✓</span> 6-week target monitoring dashboard</li>
+          <li><span class="check">✓</span> Standard API access (FHIR R5)</li>
+          <li><span class="check">✓</span> GDPR &amp; DTAC 2.0 compliance reports</li>
+          <li><span class="check">✓</span> Edge AI local processing</li>
+          <li><span class="check">✓</span> Email support</li>
+        </ul>
+        <a href="#contact" class="price-btn price-btn-outline">Get Started →</a>
+      </div>
+
+      <div class="price-card featured">
+        <div class="price-tag">Professional Tier</div>
+        <h3>Diagnostic Hub / CDC</h3>
+        <p>For Community Diagnostic Centres, mid-sized groups and NHS Trust departments.</p>
+        <span class="price-amount">£499</span>
+        <div class="price-unit">per month · billed annually</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> Everything in Basic, plus:</li>
+          <li><span class="check">✓</span> Predictive bottleneck alerts</li>
+          <li><span class="check">✓</span> Multi-user NLP validation hub</li>
+          <li><span class="check">✓</span> Up to 5 diagnostic modalities</li>
+          <li><span class="check">✓</span> DCB0129 clinical safety alignment</li>
+          <li><span class="check">✓</span> Closed-loop notification engine</li>
+          <li><span class="check">✓</span> Priority compliance support</li>
+        </ul>
+        <a href="#contact" class="price-btn price-btn-teal">Request Pilot →</a>
+      </div>
+
+      <div class="price-card">
+        <div class="price-tag">Enterprise Tier</div>
+        <h3>NHS Trust / Large Group</h3>
+        <p>For NHS Acute Trusts, ICBs and private hospital groups requiring full EHR integration.</p>
+        <span class="price-amount">Custom</span>
+        <div class="price-unit">avg £1,000+/month · bespoke SLA</div>
+        <ul class="price-features">
+          <li><span class="check">✓</span> Everything in Professional, plus:</li>
+          <li><span class="check">✓</span> Epic / Cerner full integration</li>
+          <li><span class="check">✓</span> Regional ICB capacity dashboards</li>
+          <li><span class="check">✓</span> White-label deployment option</li>
+          <li><span class="check">✓</span> On-premise secure gateway kit</li>
+          <li><span class="check">✓</span> 24/7 technical support</li>
+        </ul>
+        <a href="#contact" class="price-btn price-btn-outline">Enquire Now →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="faq-section" id="faq">
+  <div class="faq-container">
+    <div class="faq-header">
+      <div class="section-label">FAQ</div>
+      <h2 class="section-title">Common Questions</h2>
+      <div class="section-divider"></div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <h4>What exactly is the "Information Silo" problem that NexusDiag AI solves?</h4>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        The Information Silo refers to the systemic disconnect between GPs ordering diagnostic tests, laboratory scientists processing them, and radiologists or clinicians reporting results. Currently, LIMS and PACS systems act as isolated data repositories that record information but do not "bridge" communication between departments. This means 24% of Missed Diagnostic Opportunities (MDOs) occur simply because results are never followed up — affecting 4.3% of all GP consultations, equating to 6 million consultations annually. NexusDiag AI closes this gap by operating as an interoperability middleware layer that synchronizes every step of the diagnostic journey in real time, ensuring no result is ever left unread or unactioned.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <h4>How does the Predictive Workflow Intelligence Engine prevent 6-week target breaches?</h4>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        Traditional LIMS systems alert clinical staff after a delay has already occurred — by which point a breach is often inevitable. NexusDiag AI's hybrid CNN-RNN architecture analyses historical throughput data and current capacity simultaneously, calculating the "velocity" of each diagnostic sample or scan through the system. If a department's processing speed drops below a critical threshold for specific biopsy types or imaging modalities, the engine generates automated alerts in under 200ms — allowing managers to reallocate radiologists, additional scanners, or processing staff before the delay breaches the NHS 6-week constitutional standard. This shifts management from reactive to proactive, directly addressing the 46% of NHS Trusts currently missing interim diagnostic targets.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <h4>Does NexusDiag AI require replacing existing LIMS or PACS infrastructure?</h4>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        No. NexusDiag AI is specifically designed as a software-first middleware overlay that integrates with existing systems via HL7/FHIR R5 open standards — the same protocols already used by Epic, Cerner, EMIS, and SystmOne. No "rip and replace" of existing LIMS, RIS, or EPR systems is required. The platform functions as a "Universal Handshake" layer that creates a unified view across disparate hospital IT systems without requiring capital-intensive infrastructure changes. For institutions requiring edge processing, a compact secure diagnostic gateway unit is available for local de-identification, but the core SaaS platform deploys entirely via cloud APIs.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <h4>How does NexusDiag AI comply with NHS DTAC 2.0 and GDPR for patient data?</h4>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        NexusDiag AI is specifically pre-aligned with DTAC Version 2, which became mandatory from 6 April 2026. The platform processes all sensitive patient metadata locally using Edge AI gateways within hospital firewalls — ensuring no Patient Identifiable Information (PII) is ever transmitted to external cloud servers. All cloud processing uses Microsoft Azure UK South data centres with AES-256 encryption at rest and TLS 1.3 in transit. The platform includes a full DCB0129 Clinical Safety Case with a registered Clinical Safety Officer (CSO), Hazard Log, and Safety Case Report. The NLP clinical validation engine undergoes biannual bias audits to ensure consistent performance across patient demographics in line with NHS Core20PLUS5 health equity standards.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <h4>Will the platform affect diagnostic workflow performance or radiologist workload?</h4>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        No. NexusDiag AI is specifically engineered to augment, not replace, clinical decision-making. Hospitals using AI-supported diagnostics see a 42% reduction in errors and up to 35% overall efficiency improvement — reclaiming millions of hours of clinical time previously spent on administrative tracking and manual result distribution. The platform operates with sub-200ms latency, meaning its intelligent alerts and validation prompts appear seamlessly within existing clinical worklists without adding cognitive load. The human-in-the-loop framework ensures all automated tags and tactical suggestions are subject to clinician review, maintaining human agency in the diagnostic process as required by the EU AI Act 2024 High-Risk AI framework.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-question" onclick="toggleFaq(this)">
+        <h4>What is the current development status and what validation has been completed?</h4>
+        <span class="faq-icon">+</span>
+      </div>
+      <div class="faq-answer">
+        NexusDiag AI is at TRL 7 — System Prototype Demonstration in Operational Environment. The functional prototype has undergone rigorous testing in high-fidelity simulated clinical environments including high-volume phlebotomy units, imaging departments, and Community Diagnostic Centres. Validated results include 92% accuracy in identifying diagnostic workflow delays, 94% precision in report inconsistency flagging, sub-200ms alert propagation, and 95% functionality in offline mode. Active "Lighthouse" pilot discussions are underway with multiple NHS Acute Trusts. The platform is nearing TRL 8 with dual deployment models (Secure Cloud and On-Premise) stress-tested, APIs prepared for EMIS and SystmOne integration, and provisional patent registration underway for the GAN-based synthetic medical data architecture.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== CONTACT ===================== -->
+<section class="contact-section" id="contact">
+  <div class="contact-container">
+
+    <div class="contact-left">
+      <div class="section-label">Get In Touch</div>
+      <h2 class="section-title">Request a Pilot or<br>Partnership Discussion</h2>
+      <div class="section-divider"></div>
+      <p>
+        Whether you are an NHS Trust, Community Diagnostic Centre, Integrated Care Board, private imaging group, pharmaceutical research lab, or technology integration partner — we would like to hear from you. Contact us to arrange a demonstration, discuss pilot opportunities, or explore licensing and partnership options.
+      </p>
+      <div class="contact-info-item">
+        <div class="contact-icon">✉</div>
+        <div class="contact-info-text">
+          <strong>Email</strong>
+          <span>kaurcheema44@gmail.com</span>
+        </div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-icon">☎</div>
+        <div class="contact-info-text">
+          <strong>Phone</strong>
+          <span>+44 7901 186905</span>
+        </div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-icon">⚑</div>
+        <div class="contact-info-text">
+          <strong>Location</strong>
+          <span>Preston, United Kingdom</span>
+        </div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-icon">◈</div>
+        <div class="contact-info-text">
+          <strong>Target Sectors</strong>
+          <span>NHS Trusts · CDCs · ICBs · Private Imaging · Pharma &amp; Research · HealthTech Partners</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-right">
+      <div class="contact-form">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" placeholder="Your full name">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label>Organisation</label>
+          <input type="text" placeholder="NHS Trust, clinic, or institution name">
+        </div>
+        <div class="form-group">
+          <label>I am a…</label>
+          <select>
+            <option value="">Select your role</option>
+            <option>Clinical Director / Radiology Lead</option>
+            <option>Chief Digital Information Officer (CDIO)</option>
+            <option>NHS Trust / ICB Procurement Lead</option>
+            <option>Community Diagnostic Centre Manager</option>
+            <option>GP Practice / Primary Care Network</option>
+            <option>Private Imaging / Pathology Group</option>
+            <option>Pharmaceutical / Clinical Research Organisation</option>
+            <option>HealthTech / EHR Vendor</option>
+            <option>Telemedicine / Digital Health Platform</option>
+            <option>Investor / Funder</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="Tell us about your interest in NexusDiag AI — demo request, pilot programme, partnership, or investment enquiry…"></textarea>
+        </div>
+        <button class="form-submit" type="button" onclick="this.textContent='Enquiry Sent ✓';this.style.background='linear-gradient(135deg,#00A88C,#007A66)';">Send Enquiry →</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo-wrap">
+        <div class="logo-icon-sm">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="10" y="2" width="4" height="20" rx="1" fill="#040F12"/>
+            <rect x="2" y="10" width="20" height="4" rx="1" fill="#040F12"/>
+          </svg>
+        </div>
+        <span class="logo-text">NexusDiag<span> AI Group</span></span>
+      </div>
+      <p>
+        The UK's first AI-powered Diagnostic Workflow Intelligence platform — synchronizing LIMS, PACS, and clinical teams in real time to eliminate the 1.8 million patient diagnostic backlog and reduce the £3.6 billion annual clinical negligence burden.
+      </p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <a href="#how-it-works">How It Works</a>
+      <a href="#platform">Technology</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact">Request Pilot</a>
+      <a href="#contact">Partnerships</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 <span>NexusDiag AI Group</span>. All rights reserved. UK HealthTech Innovation.</p>
+    <p>Innovator Founder Business Plan — <span>Simran Kaur</span>, Founder &amp; CEO</p>
+  </div>
+</footer>
+
+<!-- ===================== SCRIPTS ===================== -->
+<script>
+
+/* NAVBAR TOGGLE */
+const toggle = document.getElementById("menuToggle");
+const menu = document.getElementById("navMenu");
+toggle.addEventListener("click",()=>menu.classList.toggle("active"));
+document.querySelectorAll("#navMenu a").forEach(link=>{
+  link.addEventListener("click",()=>menu.classList.remove("active"));
+});
+
+/* SMOOTH SCROLL */
+document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
+  anchor.addEventListener("click",function(e){
+    e.preventDefault();
+    const target=document.querySelector(this.getAttribute("href"));
+    if(target)target.scrollIntoView({behavior:"smooth"});
+  });
+});
+
+/* FAQ TOGGLE */
+function toggleFaq(el){
+  const item=el.parentElement;
+  const wasOpen=item.classList.contains("open");
+  document.querySelectorAll(".faq-item").forEach(i=>i.classList.remove("open"));
+  if(!wasOpen)item.classList.add("open");
+}
+
+/* PLATFORM CARD TOGGLE */
+function toggleCard(id,btn){
+  const card=document.getElementById(id);
+  const isOpen=card.classList.contains("open");
+  card.classList.toggle("open");
+  btn.textContent=isOpen?"Learn More":"Show Less";
+}
+
+</script>
+</body>
+</html>
